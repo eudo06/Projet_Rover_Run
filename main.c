@@ -13,6 +13,7 @@ void testTree(t_map map);
 int main() {
 
     test_all_functions();
+    // YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
 
     return 0;
