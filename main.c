@@ -4,16 +4,17 @@
 #include "loc.h"
 #include "moves.h"
 #include "tree.h"
-#define PHASE_MOVES 3
+#define PHASE_MOVES 5
 
 void test_all_functions();
 void createTestTree(p_node root, int level, int max_level);
 void testTree(t_map map);
+void testEnSpeed(t_map map);
 
 int main() {
 
     test_all_functions();
-    // YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
 
 
     return 0;
@@ -80,72 +81,37 @@ printf("\n__________________________________________\n");
 
 */
    //testTree(map);
+    testEnSpeed(map);
 
-  t_localisation start_loc = { {2, 4}, NORTH };
+  /*t_localisation start_loc = { {2, 0}, NORTH };
     p_node root = createNode(start_loc, map.soils[start_loc.pos.y][start_loc.pos.x], map.costs[start_loc.pos.y][start_loc.pos.x], PHASE_MOVES,NULL);
-    p_node tree = buildTree(root, map, 5);
+    p_node tree = buildTree(root, map, 3);
     printTree(tree,0);
 
-    //p_node minLeaf = findMinCostLeaf(root);
+    p_node minLeaf = findMinCostLeaf(tree);
+    if(minLeaf != NULL){
+        printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
+        printPathToRoot(minLeaf);  // Affiche le chemin de mouvements jusqu'à la feuille de coût minimal
+        printf("\n");
+    }
 
-    /*printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
-    printPathToRoot(minLeaf);  // Affiche le chemin de mouvements jusqu'à la feuille de coût minimal
-    printf("\n"); */
-
+*/
     // Libération de la mémoire */
    //freeTree(tree);
 }
 
 
-
-
-
-
-
-
-
-
-void testTree(t_map map) {
-    // Initialisation de la racine de l'arbre avec position (0, 0), coût 0, et sans mouvement initial
-    t_localisation start_loc = { {5, 4}, NORTH };
-    p_node root = createNode(start_loc, map.soils[start_loc.pos.y][start_loc.pos.x], map.costs[start_loc.pos.y][start_loc.pos.x], PHASE_MOVES,NULL);
-
-
-    // Ajout de nœuds enfants avec différents mouvements et coûts
-    addSon(root, F_10,PHASE_MOVES, map);
-    addSon(root,   T_RIGHT, PHASE_MOVES,map);
-    addSon(root,   T_LEFT, PHASE_MOVES,map);
-
-    // Ajout de fils pour le premier fils de la racine
-    addSon(root->sons[0],F_30,PHASE_MOVES,map);
-    addSon(root->sons[0],T_RIGHT, PHASE_MOVES,map);
-    addSon(root->sons[0],T_LEFT, PHASE_MOVES,map);
-
-    // Ajout de fils pour le deuxième fils de la racine
-    addSon(root->sons[1],F_10, PHASE_MOVES,map);
-    addSon(root->sons[1],T_RIGHT, PHASE_MOVES,map);
-    addSon(root->sons[1], T_LEFT, PHASE_MOVES,map);
-
-    // Ajout de fils pour le troisième fils de la racine
-    addSon(root->sons[2], F_20,PHASE_MOVES, map);
-    addSon(root->sons[2],T_RIGHT,PHASE_MOVES, map);
-    addSon(root->sons[2],U_TURN,PHASE_MOVES, map);
-
-    /******************************************************/
-
-
-
-    /******************************************************/
-    // Affichage de l'arbre complet pour vérification
-    printf("Test de l'arbre :\n");
-    printTree(root, 0);
-
-    // Recherche de la feuille de coût minimal
+void testEnSpeed(t_map map){
+    p_node root;
+    t_localisation start_loc = { {4, 6}, SOUTH };
+    t_move moves[] = {F_10, T_RIGHT,  F_20, T_LEFT, F_30,B_10, U_TURN, F_20, T_LEFT};
+    createTreeRecurcivity(&root, map, start_loc, 0, 9, moves, 9, 3);
+    printTree(root,0);
     p_node minLeaf = findMinCostLeaf(root);
-    printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
-    printPathToRoot(minLeaf);  // Affiche le chemin de mouvements jusqu'à la feuille de coût minimal
-    printf("\n");
+    if(minLeaf != NULL) {
+        printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
+        printPathToRoot(minLeaf);
+    }
 
-    // Libération de la mémoire
     freeTree(root);
 }

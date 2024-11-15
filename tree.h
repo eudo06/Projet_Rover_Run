@@ -9,15 +9,20 @@
 #include "moves.h"
 
 typedef struct s_node {
-    t_localisation loc;             // Localisation du rover à ce nœud
-    t_soil soil_type;               // Type de sol pour ce nœud
-    int cost;                       // Coût cumulé pour atteindre ce nœud
-    t_move move_from_parent;        // Mouvement menant ici depuis le parent
-    struct s_node **sons;           // Enfants représentant les prochains mouvements possibles
+    t_localisation loc;
+    t_soil soil_type;
+    int cost;
+    int depth;
+    t_move move_from_parent;
+    struct s_node **sons;
     int nbSons;
-    struct s_node *parent;          // Nœud parent
+    t_move *moves_available;
+    int nbMoves;
+    struct s_node *parent;
 } t_node, *p_node;
-p_node createNode(t_localisation loc, t_soil soil_type, int cost,int nbSons, p_node parent);
+
+p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent);
+void createTreeRecurcivity(p_node *parent, t_map map, t_localisation loc, int depth, int nbSons, const t_move *moves_available, int nbMoves, int k );
 p_node addSon(p_node parent,t_move mov,int nbSons, t_map map);
 p_node findMinCostLeaf(p_node root);
 void printPathToRoot(p_node leaf);

@@ -7,29 +7,44 @@
 #define NUM_MOVEMENTS 7
 #define PHASE_MOVES  5
 
-p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, p_node parent) {
+
+p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent) {
     p_node node = malloc(sizeof(t_node));
-    if (!node) return NULL;
+    if (node == NULL)
+        return NULL;
 
     node->loc = loc;
     node->soil_type = soil_type;
     node->cost = cost;
+    node->depth = depth;
     node->nbSons = nbSons;
     node->parent = parent;
+    node->move_from_parent = START;
+    node->nbMoves = nbMoves;
+    node->moves_available = malloc(nbMoves *sizeof(t_move));
+
+    if (node->moves_available == NULL) {
+        free(node);
+        return NULL;
+    }
+    for (int i = 0; i < nbMoves; i++) {
+        node->moves_available[i] = available_moves[i];
+    }
     node->sons = malloc(nbSons * sizeof(p_node));
 
-    if (!node->sons) {
+    if (node->sons == NULL) {
         free(node);
         return NULL;
     }
 
-    for (int i = 0; i < nbSons; i++)
+    for (int i = 0; i < nbSons; i++){
         node->sons[i] = NULL;
+    }
 
     return node;
 }
 
-p_node addSon(p_node parent, t_move mov, int nbSons, t_map map) {
+/*p_node addSon(p_node parent, t_move mov, int nbSons, t_map map) {
     t_localisation loc = move(parent->loc, mov);
 
 
@@ -55,23 +70,88 @@ p_node addSon(p_node parent, t_move mov, int nbSons, t_map map) {
 
     return son;
 }
+*/
+void createTreeRecurcivity(p_node *parent, t_map map, t_localisation loc, int depth, int nbSons, const t_move *moves_available, int nbMoves, int k ) {
+
+    if (depth < k) {
+        if(!isValidLocalisation(loc.pos, map.x_max, map.y_max))
+            return;
+
+        *parent = createNode(loc, map.soils[loc.pos.y][loc.pos.x], map.costs[loc.pos.y][loc.pos.x], nbSons, moves_available, nbMoves, depth,NULL);
+
+        if(NULL == *parent || map.costs[loc.pos.y][loc.pos.x] > 10000)
+            return;
+
+        for (int i = 0; i < (*parent)->nbMoves; i++) {
+
+            t_move *availsMove = malloc(((*parent)->nbMoves - 1) * sizeof(t_move));
+            if (NULL == availsMove)
+                return;
+
+            int nbAvailsMove = 0;
+
+            for (int j = 0; j < (*parent)->nbMoves; j++) {
+                if ((*parent)->moves_available[j] != (*parent)->moves_available[i]) {
+                    availsMove[nbAvailsMove++] = (*parent)->moves_available[j];
+                }
+            }
+            t_localisation localisation  = move(loc, (*parent)->moves_available[i]);
+
+
+
+            createTreeRecurcivity(&(*parent)->sons[i], map,localisation, (*parent)->depth + 1,
+                                  (*parent)->nbSons - 1, availsMove, nbAvailsMove, k);
+            free(availsMove);
+        }
+    }
+}
+void printTree(p_node root, int level) {
+    if (root == NULL)
+        return;
+
+    // Indentation pour montrer le niveau dans l'arbre
+    for (int i = 0; i <= level; i++) printf("  ");
+    printf("Position (%d, %d), Orientation %d, Cost: %d\n", root->loc.pos.x, root->loc.pos.y, root->loc.ori, root->cost);
+
+    // Appel récursif pour chaque enfant (fils) du noeud actuel
+    for (int i = 0; i < root->nbSons; i++) {
+        printTree(root->sons[i], level + 1);
+    }
+}
+
+// Fonction pour libérer l'arbre
+void freeTree(p_node node) {
+    if (node == NULL) return;
+
+    for (int i = 0; i < node->nbSons; i++) {
+        freeTree(node->sons[i]);
+    }
+    free(node->sons);
+    free(node->moves_available);
+    free(node);
+}
 
 
 p_node findMinCostLeaf(p_node root) {
+   //if (root == NULL) return NULL;
+
     if (root->nbSons == 0) {
-        return root;  // Si aucun fils, c'est une feuille
+        return root;
     }
 
     p_node minLeaf = NULL;
-    int minCost = 2000;
+    int minCost = COST_UNDEF;
 
     for (int i = 0; i < root->nbSons; i++) {
+       if (root->sons[i] == NULL) continue;
+
         p_node leaf = findMinCostLeaf(root->sons[i]);
-        if (leaf->cost < minCost) {
+        if (leaf != NULL && leaf->cost < minCost) {
             minCost = leaf->cost;
             minLeaf = leaf;
         }
     }
+
     return minLeaf;
 }
 
@@ -88,34 +168,9 @@ void printPathToRoot(p_node leaf) {
         printf("START");
     }
 }
-void printTree(p_node root, int level) {
-    if (root == NULL) return;
-
-    // Indentation pour montrer le niveau dans l'arbre
-    for (int i = 0; i <= level; i++) printf("  ");
-    printf("Position (%d, %d), Orientation %d, Cost: %d\n", root->loc.pos.x, root->loc.pos.y, root->loc.ori, root->cost);
-
-    // Appel récursif pour chaque enfant (fils) du noeud actuel
-    for (int i = 0; i < root->nbSons; i++) {
-        printTree(root->sons[i], level + 1);
-    }
-}
 
 
-// Fonction pour libérer toute la mémoire allouée pour l'arbre
-void freeTree(p_node root) {
-    if (root == NULL) return;
 
-    // Libère chaque enfant (fils) du noeud actuel
-    for (int i = 0; i < root->nbSons; i++) {
-        freeTree(root->sons[i]);
-    }
-
-    // Libère le tableau de pointeurs vers les fils
-    free(root->sons);
-    // Libère le noeud lui-même
-    free(root);
-}
 
 
 // Tableau des disponibilités initiales des mouvements
@@ -154,6 +209,7 @@ int drawRandomMovement() {
             movement_availability[i]--;
             return i;
         }
+
         choice -= movement_availability[i];
     }
 
@@ -175,7 +231,7 @@ int hasReachedBase(t_map map, t_position pos){
         return 1;
     return 0;
 }
-
+/*
 p_node buildTree(p_node root, t_map map, int depth) {
     // Si la profondeur maximale est atteinte ou si MARC est arrivé à la base
     if (depth == 0 || hasReachedBase(map, root->loc.pos)) {
@@ -231,7 +287,7 @@ p_node buildTree(p_node root, t_map map, int depth) {
             root->nbSons = 4;  // Limite à 4 mouvements si le dernier mouvement a terminé sur un Reg
         }
 
-       /* // Applique les restrictions pour le sol Pente
+        // Applique les restrictions pour le sol Pente
         if (soil_type == PENTE) {
             // Déplace MARC d'une case dans la direction descendante
             // Exemple simplifié : on suppose ici que la direction descendante est vers le bas
@@ -240,7 +296,7 @@ p_node buildTree(p_node root, t_map map, int depth) {
             if (!isValidLocalisation(new_loc.pos, map->x_max, map->y_max)) {
                 continue;
             }
-        } */
+        }
 
         // Crée et ajoute le nœud fils avec les informations de la nouvelle localisation
         p_node son = addSon(root, movement,PHASE_MOVES, map);
@@ -256,3 +312,5 @@ p_node buildTree(p_node root, t_map map, int depth) {
 
     return root;
 }
+
+*/
