@@ -21,12 +21,13 @@ typedef struct s_node {
     struct s_node *parent;
 } t_node, *p_node;
 
-p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent);
-void createTreeRecurcivity(p_node *parent, t_map map, t_localisation loc, int depth, int nbSons, const t_move *moves_available, int nbMoves, int k );
+p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do);
+void createTreeRecursivity(p_node parent, t_map map, int k);
 p_node addSon(p_node parent,t_move mov,int nbSons, t_map map);
-p_node findMinCostLeaf(p_node root);
+void findMinCostLeaf(p_node root, p_node *leaf);
 void printPathToRoot(p_node leaf);
 void printTree(p_node root, int level);
 void freeTree(p_node root);
 p_node buildTree(p_node root, t_map map, int depth);
+
 #endif //UNTITLED1_TREE_H

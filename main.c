@@ -4,11 +4,9 @@
 #include "loc.h"
 #include "moves.h"
 #include "tree.h"
-#define PHASE_MOVES 5
+
 
 void test_all_functions();
-void createTestTree(p_node root, int level, int max_level);
-void testTree(t_map map);
 void testEnSpeed(t_map map);
 
 int main() {
@@ -80,38 +78,26 @@ void test_all_functions() {
 printf("\n__________________________________________\n");
 
 */
-   //testTree(map);
+
     testEnSpeed(map);
 
-  /*t_localisation start_loc = { {2, 0}, NORTH };
-    p_node root = createNode(start_loc, map.soils[start_loc.pos.y][start_loc.pos.x], map.costs[start_loc.pos.y][start_loc.pos.x], PHASE_MOVES,NULL);
-    p_node tree = buildTree(root, map, 3);
-    printTree(tree,0);
 
-    p_node minLeaf = findMinCostLeaf(tree);
-    if(minLeaf != NULL){
-        printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
-        printPathToRoot(minLeaf);  // Affiche le chemin de mouvements jusqu'à la feuille de coût minimal
-        printf("\n");
-    }
-
-*/
-    // Libération de la mémoire */
-   //freeTree(tree);
 }
 
 
 void testEnSpeed(t_map map){
-    p_node root;
-    t_localisation start_loc = { {4, 6}, SOUTH };
-    t_move moves[] = {F_10, T_RIGHT,  F_20, T_LEFT, F_30,B_10, U_TURN, F_20, T_LEFT};
-    createTreeRecurcivity(&root, map, start_loc, 0, 9, moves, 9, 3);
+
+    t_localisation start_loc = { {5, 6}, SOUTH };
+    t_move moves[] = {F_10, T_RIGHT,  F_20, T_LEFT, F_30, T_RIGHT, U_TURN, B_10, T_LEFT};
+    p_node root = createNode(start_loc, map.soils[start_loc.pos.y][start_loc.pos.x], map.costs[start_loc.pos.y][start_loc.pos.x], 9, moves, 9, 0, NULL, START);
+    createTreeRecursivity(root, map,5);
     printTree(root,0);
-    p_node minLeaf = findMinCostLeaf(root);
+    p_node minLeaf = NULL;
+    findMinCostLeaf(root, &minLeaf);
     if(minLeaf != NULL) {
         printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
         printPathToRoot(minLeaf);
-    }
+   }
 
     freeTree(root);
 }
