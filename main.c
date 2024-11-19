@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include "map.h"
 #include "loc.h"
 #include "moves.h"
@@ -12,8 +11,6 @@ void testEnSpeed(t_map map);
 int main() {
 
     test_all_functions();
-
-
 
     return 0;
 }
@@ -87,8 +84,8 @@ printf("\n__________________________________________\n");
 
 void testEnSpeed(t_map map){
 
-    t_localisation start_loc = { {5, 6}, SOUTH };
-    t_move moves[] = {F_10, T_RIGHT,  F_20, T_LEFT, F_30, T_RIGHT, U_TURN, B_10, T_LEFT};
+    t_localisation start_loc = { {4,3 }, SOUTH };
+    t_move *moves = getRandomMoves(9);
     p_node root = createNode(start_loc, map.soils[start_loc.pos.y][start_loc.pos.x], map.costs[start_loc.pos.y][start_loc.pos.x], 9, moves, 9, 0, NULL, START);
     createTreeRecursivity(root, map,5);
     printTree(root,0);
