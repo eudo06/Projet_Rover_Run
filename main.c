@@ -98,4 +98,4 @@ void testEnSpeed(t_map map){
 
     freeTree(root);
 }
-// jean eudes evite de me plagier vvvvhk
+// jean eudes evite de me plagier vvvvhk hbjbh
