@@ -29,7 +29,7 @@ typedef struct s_stack_node
     int nbElts;
 }t_stack_node;
 
-p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do);
+p_node createNode(t_localisation loc, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do,t_map map);
 void createTreeRecursivity(p_node parent, t_map map, int k);
 
 void findMinCostLeaf(p_node root, p_node *leaf);

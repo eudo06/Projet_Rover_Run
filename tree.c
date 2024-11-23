@@ -7,14 +7,18 @@
 #include "tree.h"
 
 
-p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do) {
+p_node createNode(t_localisation loc, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do, t_map map) {
     p_node node = malloc(sizeof(t_node));
     if (node == NULL)
         return NULL;
+    if (!isValidLocalisation(loc.pos,map.x_max , map.y_max)) {
+        printf("Position invalide \n");
+        return NULL;
+    }
 
     node->loc = loc;
-    node->soil_type = soil_type;
-    node->cost = cost;
+    node->soil_type = map.soils[loc.pos.y][loc.pos.x];
+    node->cost = map.costs[loc.pos.y][loc.pos.x];
     node->depth = depth;
     node->nbSons = nbSons;
     node->parent = parent;
@@ -108,14 +112,13 @@ void createTreeRecursivity(p_node parent, t_map map, int k) {
 
 
         p_node son = createNode(son_loc,
-                                map.soils[son_loc.pos.y][son_loc.pos.x],
-                                map.costs[son_loc.pos.y][son_loc.pos.x],
                                 nbAvailsMove,
                                 availsMove,
                                 parent->nbSons - 1,
                                 parent->depth + 1,
                                 parent,
-                                parent->moves_available[i]);
+                                parent->moves_available[i],
+                                map);
         if (son == NULL) {
             free(availsMove);
             continue;
@@ -129,11 +132,14 @@ void createTreeRecursivity(p_node parent, t_map map, int k) {
 }
 
 void findMinCostLeafInNode(p_node node, p_node *leaf) {
-    if (node == NULL)
+    if (node == NULL )
         return;
 
-    if (*leaf == NULL || node->cost < (*leaf)->cost)
-        *leaf = node;
+    if (node->nbSons == 0) {
+        if (*leaf == NULL || node->cost < (*leaf)->cost) {
+            *leaf = node;
+        }
+    }
 
     for (int i = 0; i < node->nbSons; i++) {
         findMinCostLeafInNode(node->sons[i], leaf);
@@ -259,7 +265,7 @@ void getPath(p_node min_leaf, t_stack_node* s) {
 
 void lauchedPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     t_move *moves = getRandomMoves(9);
-    p_node tree = createNode(*start_loc, map.soils[start_loc->pos.y][start_loc->pos.x], map.costs[start_loc->pos.y][start_loc->pos.x], 9, moves, 9, 0, NULL, START);
+    p_node tree = createNode(*start_loc, 9, moves, 9, 0, NULL, START, map);
     int nbMovementsInPhase = 5;
     if (tree->soil_type == REG) {
         nbMovementsInPhase = 4;
@@ -279,6 +285,10 @@ void lauchedPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
 
 
 void drivingToBase(t_map map, t_localisation *start_loc, t_stack_node *s) {
+    if (!isValidLocalisation(start_loc->pos, map.x_max, map.y_max) || map.costs[start_loc->pos.y][start_loc->pos.x] > 10000) {
+        printf("Position invalide \n");
+        return;
+    }
     while(!hasReachedBase(map, start_loc->pos)){
         lauchedPhase(map, start_loc, s);
     }

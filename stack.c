@@ -34,7 +34,7 @@ void push(t_stack *p_stack, int value)
     assert(p_stack->nbElts < p_stack->size);
     p_stack->values[p_stack->nbElts] = value;
     p_stack->nbElts++;
-    return;
+
 }
 
 /**

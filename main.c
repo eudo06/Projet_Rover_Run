@@ -86,7 +86,7 @@ printf("\n__________________________________________\n");
 
 void testEnSpeed(t_map map){
 
-    t_localisation start_loc = { {4,3 }, SOUTH };
+    t_localisation start_loc = { {3,6}, NORTH };
     t_stack_node s = createStackNode(100);
     drivingToBase(map, &start_loc, &s);
 }
