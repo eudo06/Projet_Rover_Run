@@ -4,6 +4,7 @@
 
 #ifndef UNTITLED1_TREE_H
 #define UNTITLED1_TREE_H
+
 #include "loc.h"
 #include "map.h"
 #include "moves.h"
@@ -21,13 +22,35 @@ typedef struct s_node {
     struct s_node *parent;
 } t_node, *p_node;
 
-p_node createNode(t_localisation loc, t_soil soil_type, int cost, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do);
+typedef struct s_stack_node
+{
+    p_node *values;
+    int size;
+    int nbElts;
+}t_stack_node;
+
+p_node createNode(t_localisation loc, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do,t_map map);
 void createTreeRecursivity(p_node parent, t_map map, int k);
-p_node addSon(p_node parent,t_move mov,int nbSons, t_map map);
+
 void findMinCostLeaf(p_node root, p_node *leaf);
 void printPathToRoot(p_node leaf);
 void printTree(p_node root, int level);
+void lauchedPhase(t_map map, t_localisation *start_loc, t_stack_node *s);
+void drivingToBase(t_map map, t_localisation *start_loc, t_stack_node *s);
 void freeTree(p_node root);
-p_node buildTree(p_node root, t_map map, int depth);
+
+
+
+t_stack_node createStackNode(int);
+
+
+void pushNode(t_stack_node *p_stack, p_node value);
+
+int isStackEmptyNode(t_stack_node );
+
+p_node popNode(t_stack_node *);
+
+
+p_node topNode(t_stack_node);
 
 #endif //UNTITLED1_TREE_H

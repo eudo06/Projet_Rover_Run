@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include "moves.h"
 
+
+
+
 /* prototypes of local functions */
 /* local functions are used only in this file, as helper functions */
 
@@ -160,7 +163,6 @@ t_localisation move(t_localisation loc, t_move move)
 void updateLocalisation(t_localisation *p_loc, t_move m)
 {
     *p_loc = move(*p_loc, m);
-    return;
 }
 
 t_move *getRandomMoves(int N)
