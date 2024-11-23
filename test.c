@@ -50,3 +50,22 @@ void test_move() {
     printf("La localisation de Rover apres fait demi-tour devrait etre (%d,%d) oriente vers %d\n",move_7.pos.x,move_7.pos.y,move_7.ori);
     printf("\n");
 }
+void test_getRandomMoves(){
+    t_move *moves1 = (t_move *)malloc(9 * sizeof(t_move));
+    t_move *moves2 = (t_move *)malloc(5 * sizeof(t_move));
+    moves1 = getRandomMoves(9);
+    moves2 = getRandomMoves(5);
+    printf("[ ");
+    for (int i=0; i <9;i++){
+        printf("[ ");
+        printf("%s ", getMoveAsString(moves1[i]));
+
+    }
+    printf("]\n");
+
+    printf("[ ");
+    for (int i=0; i <5;i++){
+        printf("%s ", getMoveAsString(moves2[i]));
+    }
+    printf("]\n");
+}

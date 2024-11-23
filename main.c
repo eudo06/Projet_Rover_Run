@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "map.h"
 #include "loc.h"
-
+#include "test.h"
 #include "tree.h"
+#include "moves.h"
+#include"stdlib.h"
 
 
 
@@ -12,6 +14,9 @@ void testEnSpeed(t_map map);
 int main() {
 
     test_all_functions();
+    test_move();
+    test_localisation();
+    test_getRandomMoves();
 
     return 0;
 }
