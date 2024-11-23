@@ -50,3 +50,4 @@ void test_move() {
     printf("La localisation de Rover apres fait demi-tour devrait etre (%d,%d) oriente vers %d\n",move_7.pos.x,move_7.pos.y,move_7.ori);
     printf("\n");
 }
+// hgjhk
