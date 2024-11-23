@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "map.h"
 #include "loc.h"
-#include "moves.h"
+
 #include "tree.h"
 
 
@@ -85,16 +85,6 @@ printf("\n__________________________________________\n");
 void testEnSpeed(t_map map){
 
     t_localisation start_loc = { {4,3 }, SOUTH };
-    t_move *moves = getRandomMoves(9);
-    p_node root = createNode(start_loc, map.soils[start_loc.pos.y][start_loc.pos.x], map.costs[start_loc.pos.y][start_loc.pos.x], 9, moves, 9, 0, NULL, START);
-    createTreeRecursivity(root, map,5);
-    printTree(root,0);
-    p_node minLeaf = NULL;
-    findMinCostLeaf(root, &minLeaf);
-    if(minLeaf != NULL) {
-        printf("\nFeuille de cout minimal : %d\n", minLeaf->cost);
-        printPathToRoot(minLeaf);
-   }
-
-    freeTree(root);
+    t_stack_node s = createStackNode(100);
+    drivingToBase(map, &start_loc, &s);
 }
