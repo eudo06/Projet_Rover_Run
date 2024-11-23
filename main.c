@@ -18,6 +18,7 @@ int main() {
 
 
 
+
 // Fonction de test pour vérifier toutes les fonctionnalités
 void test_all_functions() {
     t_map map;
