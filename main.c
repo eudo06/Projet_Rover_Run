@@ -5,6 +5,7 @@
 #include "tree.h"
 
 
+
 void test_all_functions();
 void testEnSpeed(t_map map);
 

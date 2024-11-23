@@ -16,6 +16,7 @@ static char _moves[8][8] = {"F 10m", "F 20m", "F 30m", "B 10m", "T left", "T rig
  * @brief Enum for the possible moves of the robot
  */
 
+
 typedef enum e_move
 {
     F_10, // Forward 10 m

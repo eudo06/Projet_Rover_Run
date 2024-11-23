@@ -13,6 +13,7 @@ t_localisation loc_init(int x, int y, t_orientation ori)
     return loc;
 }
 
+
 int isValidLocalisation(t_position loc, int x_max, int y_max)
 {
     return (loc.x >= 0 && loc.x < x_max && loc.y >= 0 && loc.y < y_max);
@@ -49,4 +50,6 @@ t_position DOWN(t_position pos)
     new_pos.y = pos.y + 1;
     return new_pos;
 }
+
+
 

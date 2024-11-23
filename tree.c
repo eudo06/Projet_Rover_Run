@@ -247,6 +247,7 @@ void executePath(t_stack_node *s, t_localisation *start_loc) {
 
 }
 
+
 void getPath(p_node min_leaf, t_stack_node* s) {
     if (min_leaf == NULL) return;
     p_node current = min_leaf;
