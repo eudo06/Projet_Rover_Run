@@ -35,7 +35,7 @@ void createTreeRecursivity(p_node parent, t_map map, int k);
 void findMinCostLeaf(p_node root, p_node *leaf);
 void printPathToRoot(p_node leaf);
 void printTree(p_node root, int level);
-void lauchedPhase(t_map map, t_localisation *start_loc, t_stack_node *s);
+int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s);
 void drivingToBase(t_map map, t_localisation *start_loc, t_stack_node *s);
 void freeTree(p_node root);
 

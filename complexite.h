@@ -1,9 +1,9 @@
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <time.h>
 #include <limits.h>
 
-
+/*
 typedef struct Node {
     int cost;                 // Coût associé au mouvement/position
     int movement;             // Identifiant du mouvement (ex : 0 = "Avancer de 10m")
@@ -23,3 +23,5 @@ void find_min_cost_leaf(Node* root, int* min_cost, Node** min_leaf);
 void print_path(Node* root, Node* leaf);
 
 void free_tree(Node* root);
+
+ */

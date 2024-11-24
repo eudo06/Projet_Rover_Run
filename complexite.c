@@ -1,4 +1,4 @@
-
+/*
 #include "complexite.h"
 // Définitions des types de terrains martiens
 #define PLAINE 0
@@ -127,3 +127,4 @@ int main() {
 
     return 0;
 }
+*/

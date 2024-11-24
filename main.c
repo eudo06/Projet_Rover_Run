@@ -14,10 +14,10 @@ void testEnSpeed(t_map map);
 int main() {
 
     test_all_functions();
-    test_move();
+  /*  test_move();
     test_localisation();
     test_getRandomMoves();
-
+*/
     return 0;
 }
 
@@ -91,7 +91,8 @@ printf("\n__________________________________________\n");
 
 void testEnSpeed(t_map map){
 
-    t_localisation start_loc = { {1,1}, NORTH };
+    t_localisation start_loc = {{2 ,6}, NORTH };
     t_stack_node s = createStackNode(100);
+
     drivingToBase(map, &start_loc, &s);
 }
