@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include "map.h"
 #include "loc.h"
-#include "test.h"
+
 #include "tree.h"
-#include "moves.h"
-#include"stdlib.h"
+#include <sys/time.h>
 
 
 
@@ -13,7 +12,28 @@ void testEnSpeed(t_map map);
 
 int main() {
 
+
+    struct timeval start, end;
+
+    // Temps de début
+    gettimeofday(&start, NULL);
+
+    // Opération à mesurer
     test_all_functions();
+
+    // Temps de fin
+    gettimeofday(&end, NULL);
+
+    // Calculer le temps écoulé
+    long seconds = end.tv_sec - start.tv_sec;
+    long microseconds = end.tv_usec - start.tv_usec;
+    double elapsed = seconds + microseconds * 1e-6;
+
+    printf("\nTemps écoulé test_all_functions: %.6f secondes\n", elapsed);
+
+
+
+
   /*  test_move();
     test_localisation();
     test_getRandomMoves();
@@ -32,9 +52,9 @@ void test_all_functions() {
     // If either _WIN32 or _WIN64 is defined, it means we are on a Windows platform.
     // On Windows, file paths use backslashes (\), hence we use the appropriate file path for Windows.
 #if defined(_WIN32) || defined(_WIN64)
-    map = createMapFromFile("..\\maps\\example1.map");
+    map = createMapFromFile("..\\maps copie\\example24.map");
 #else
-    map = createMapFromFile("../maps/example1.map");
+    map = createMapFromFile("../maps copie/example24.map");
 #endif
 
     printf("Map created with dimensions %d x %d\n", map.y_max, map.x_max);
@@ -55,7 +75,7 @@ void test_all_functions() {
         }
         printf("\n");
     }
-    //displayMap(map);
+    displayMap(map);
 
 
     // Vérification de la station de base
@@ -91,8 +111,20 @@ printf("\n__________________________________________\n");
 
 void testEnSpeed(t_map map){
 
-    t_localisation start_loc = {{2 ,6}, NORTH };
+    t_localisation start_loc = {{1 ,5},NORTH };
     t_stack_node s = createStackNode(100);
+    struct timeval start, end;
 
+    // Temps de début
+    gettimeofday(&start, NULL);
     drivingToBase(map, &start_loc, &s);
+    // Temps de fin
+    gettimeofday(&end, NULL);
+
+    // Calculer le temps écoulé
+    long seconds = end.tv_sec - start.tv_sec;
+    long microseconds = end.tv_usec - start.tv_usec;
+    double elapsed = seconds + microseconds * 1e-6;
+
+    printf("Temps nécessaire pour conduire le robot à la base: %.6f secondes\n", elapsed);
 }

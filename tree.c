@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "tree.h"
+#include <sys/time.h>
 
 p_node createNode(t_localisation loc, int nbSons, const t_move *available_moves, int nbMoves, int depth, p_node parent, t_move move_to_do, t_map map) {
     if (nbSons < 0 || nbMoves < 0) {
@@ -216,7 +217,7 @@ void printPathToRoot(p_node leaf) {
         // Ensure getMoveAsString returns a valid string
         char* moveStr = getMoveAsString(leaf->move_from_parent);
         if (moveStr != NULL) {
-            printf(" -> %s", moveStr);
+             printf(" -> %s", moveStr);
         } else {
             printf(" -> UNKNOWN_MOVE");
         }
@@ -342,13 +343,33 @@ int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     if (tree->soil_type == REG) {
         nbMovementsInPhase = 4;
     }
+    struct timeval start, end;
+
+    // Temps de début
+    gettimeofday(&start, NULL);
 
     createTreeRecursivity(tree, map, nbMovementsInPhase);
+    gettimeofday(&end, NULL);
+    // Calculer le temps écoulé
+    long seconds = end.tv_sec - start.tv_sec;
+    long microseconds = end.tv_usec - start.tv_usec;
+    double elapsed = seconds + microseconds * 1e-6;
+
+    printf("\nTemps écoulé récurssivité: %.6f secondes\n", elapsed);
 
     // printTree(tree, 0);
 
     p_node minLeaf = NULL;
+
+    // Temps de début
+    gettimeofday(&start, NULL);
     findMinCostLeaf(tree, &minLeaf);
+    gettimeofday(&end, NULL);
+    // Calculer le temps écoulé
+    long secondss = end.tv_sec - start.tv_sec;
+    long microsecondss = end.tv_usec - start.tv_usec;
+    double elapseds = secondss + microsecondss * 1e-6;
+    printf("\nTemps écoulé coûts minimal: %.6f secondes\n", elapseds);
 
     if(minLeaf != NULL) {
         printf("\nMinimum cost leaf : %d\n", minLeaf->cost);
