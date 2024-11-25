@@ -146,7 +146,7 @@ void createTreeRecursivity(p_node parent, t_map map, int k) {
 void findMinCostLeafInNode(p_node node, p_node *leaf) {
     if (node == NULL)
         return;
-    if (node->nbSons == 0 && node->cost < 10000) {  // Consider defining 10000 as a constant
+    if ((node->nbSons == 0 || node->nbSons == 4 ) && node->cost < 10000) {  // Consider defining 10000 as a constant
         if (*leaf == NULL || node->cost < (*leaf)->cost) {
             *leaf = node;
         }
@@ -172,7 +172,7 @@ void printTree(p_node root, int level) {
         return;
 
     for (int i = 0; i <= level; i++) printf("  ");
-    printf("Position (%d, %d), Orientation %d, Cost: %d\n", root->loc.pos.x, root->loc.pos.y, root->loc.ori, root->cost);
+    printf("Position (%d, %d), Orientation %d, Cost: %d,  NbSons : %d\n",  root->loc.pos.x, root->loc.pos.y, root->loc.ori, root->cost, root->nbSons);
 
 
     for (int i = 0; i < root->nbSons; i++) {
@@ -334,7 +334,7 @@ int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     p_node tree = createNode(*start_loc, 9, moves, 9, 0, NULL, START, map);
     free(moves);  // Freeing moves after it's no longer needed
 
-    if (!tree) {
+    if (tree == NULL) {
         printf("Failed to create tree node.\n");
         return 0;
     }
@@ -343,13 +343,16 @@ int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     if (tree->soil_type == REG) {
         nbMovementsInPhase = 4;
     }
+
     struct timeval start, end;
 
     // Temps de début
     gettimeofday(&start, NULL);
 
     createTreeRecursivity(tree, map, nbMovementsInPhase);
+
     gettimeofday(&end, NULL);
+
     // Calculer le temps écoulé
     long seconds = end.tv_sec - start.tv_sec;
     long microseconds = end.tv_usec - start.tv_usec;
@@ -357,25 +360,29 @@ int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
 
     printf("\nTemps écoulé récurssivité: %.6f secondes\n", elapsed);
 
-    // printTree(tree, 0);
+    //printTree(tree, 0);
 
     p_node minLeaf = NULL;
-
+    struct timeval start1, end1;
     // Temps de début
-    gettimeofday(&start, NULL);
+    gettimeofday(&start1, NULL);
     findMinCostLeaf(tree, &minLeaf);
-    gettimeofday(&end, NULL);
+    gettimeofday(&end1, NULL);
     // Calculer le temps écoulé
-    long secondss = end.tv_sec - start.tv_sec;
-    long microsecondss = end.tv_usec - start.tv_usec;
-    double elapseds = secondss + microsecondss * 1e-6;
-    printf("\nTemps écoulé coûts minimal: %.6f secondes\n", elapseds);
+    seconds = end1.tv_sec - start1.tv_sec;
+    microseconds = end1.tv_usec - start1.tv_usec;
+     elapsed = seconds + microseconds * 1e-6;
+    printf("\nTemps écoulé coûts minimal: %.6f secondes\n", elapsed);
+
 
     if(minLeaf != NULL) {
         printf("\nMinimum cost leaf : %d\n", minLeaf->cost);
         printPathToRoot(minLeaf);
         getPath(minLeaf, s);
         executePath(s, start_loc);
+    }else {
+        printf("Failed to find minimum cost leaf\n");
+        return 0;
     }
 
     freeTree(tree);
@@ -390,7 +397,7 @@ void drivingToBase(t_map map, t_localisation *start_loc, t_stack_node *s) {
         return;
         }
 
-    while (!hasReachedBase(map, start_loc->pos)) {
+    while (!hasReachedBase(map, start_loc->pos) && nbPhases < 10) {
         int phaseResult = lauchPhase(map, start_loc, s);
 
         if (!phaseResult) {
