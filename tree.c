@@ -409,3 +409,6 @@ void drivingToBase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     printf("\nNumber of phases : %d\n", nbPhases);
 
 }
+
+
+

@@ -9,6 +9,7 @@
 #include "moves.h"
 
 
+void testOutOfBounds();
 void test_localisation();
 void test_move();
 void test_getRandomMoves();

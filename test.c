@@ -6,6 +6,37 @@
 #include "moves.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "map.h"
+
+
+
+// Test : Vérification de la sortie de la carte
+void testOutOfBounds() {
+    printf("=== Test : Vérification de la sortie de la carte ===\n");
+
+    // Charger une carte de test
+    t_map map = createMapFromFile("/mnt/data/maps/example1.map");
+
+    // Initialisation de la position de départ
+    t_localisation start;
+    start.pos.x = 0;  // Coin supérieur gauche
+    start.pos.y = 0;
+    start.ori = 0;    // Orientation initiale (par exemple, Nord)
+
+    // Simuler un mouvement hors des limites
+    t_move move = B_10;  // Reculer de 10m, définition dans vos fichiers
+    updateLocalisation(&start, move);
+
+    // Vérifier si la position est valide
+    if (start.pos.x < 0 || start.pos.y < 0 || start.pos.x >= map.x_max || start.pos.y >= map.y_max) {
+        printf("Erreur : MARC est sorti des limites de la carte !\n");
+    } else {
+        printf("Position après le mouvement : (%d, %d)\n", start.pos.x, start.pos.y);
+    }
+}
+
+
+
 void test_localisation(){
 
     t_localisation Rover_loc = loc_init(4,6,NORTH);
@@ -69,3 +100,4 @@ void test_getRandomMoves(){
     }
     printf("]\n");
 }
+

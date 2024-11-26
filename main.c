@@ -16,10 +16,10 @@ int main() {
     test_all_functions();
 
 
-  /*  test_move();
-    test_localisation();
-    test_getRandomMoves();
-*/
+    /*  test_move();
+      test_localisation();
+      test_getRandomMoves();
+  */
     return 0;
 }
 
@@ -60,7 +60,7 @@ void test_all_functions() {
     //displayMap(map);
 
 
-   testEnSpeed(map);
+    testEnSpeed(map);
 
 
 }
