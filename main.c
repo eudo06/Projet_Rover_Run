@@ -58,7 +58,7 @@ void menu() {
     char *map_file = NULL;
 
     // Sélection de la carte
-    printf("\n=== Sélection de la carte ===\n");
+    printf("\n=== card selection ===\n");
     printf("1. Normal map (example1.map)\n");
     printf("2. Complex map (other.map)\n");
     printf("Your choice : ");
