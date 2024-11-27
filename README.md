@@ -2,104 +2,122 @@
 
 
 
+
 Rover Run
 
-#Description
+##Description
 
-Rover Run est un projet en langage C visant à simuler le déplacement du rover MARC (Mars Rover Cartograph) sur une carte martienne. Le rover doit naviguer sur différents types de terrains, éviter les obstacles, et atteindre une station de base en minimisant les coûts associés à chaque déplacement. Ce projet met en œuvre des structures de données et des algorithmes pour la recherche du chemin optimal.
+Rover Run est un projet en langage C simulant les déplacements du rover MARC sur une carte martienne. L’objectif est de guider MARC vers une base en tenant compte des coûts associés aux différents terrains (plaine, erg, reg, crevasse, etc.). Ce projet intègre un menu interactif permettant de tester différentes fonctionnalités du programme.
 
 ##Fonctionnalités
 
-	1.	Chargement dynamique de cartes martiennes :
-	•	Types de terrains : plaine, erg (sol meuble), reg (sol accidenté), crevasse, pente.
-	2.	Calcul et utilisation d’un arbre des déplacements :
-	•	Exploration de l’arbre pour trouver la meilleure séquence de mouvements.
-	3.	Optimisation du chemin :
-	•	Choix des déplacements minimisant les coûts associés à la carte.
-	4.	Gestion des contraintes de terrain :
-	•	Prise en compte des coûts spécifiques liés aux types de sols.
-	•	Vérification des crevasses et des bords de carte.
-	5.	Rapidité d’exécution :
-	•	Mesure des temps d’exécution pour le calcul des coûts et la recherche dans l’arbre.
+	1.	Menu interactif :
+	•	Sélection de la carte à utiliser (example1.map ou other.map).
+	•	Options pour tester différentes parties du programme.
+	2.	Gestion des cartes :
+	•	Chargement dynamique de cartes martiennes définies dans des fichiers .map.
+	•	Affichage des dimensions, types de terrains, et coûts associés.
+	3.	Déplacement de MARC :
+	•	Simulation des mouvements de MARC sur la carte jusqu’à la base.
+	•	Gestion des coûts de déplacements en fonction des types de terrains.
+	4.	Tests intégrés :
+	•	Vérification des fonctionnalités liées aux cartes, à la localisation, et aux mouvements.
+	5.	Temps d’exécution :
+	•	Mesure du temps nécessaire pour conduire MARC à la base.
 
-###Structure du projet
+##Structure du projet
 
-Le projet est organisé en plusieurs modules pour assurer la modularité et la clarté :
-•	main.c : Point d’entrée du programme, gestion principale de l’exécution.
+Le projet est organisé en plusieurs fichiers pour assurer une modularité et une clarté optimales :
+•	main.c : Point d’entrée principal du programme, avec le menu interactif.
 
-•	tree.c / tree.h : Construction et exploration de l’arbre des déplacements.
+•	map.c / map.h : Gestion des cartes (chargement, affichage, calcul des coûts).
 
-•	map.c / map.h : Chargement et gestion des cartes martiennes.
+•	loc.c / loc.h : Gestion de la localisation du rover (position et orientation).
 
-•	loc.c / loc.h : Mise à jour de la localisation du rover.
+•	tree.c / tree.h : Gestion de l’arbre des déplacements.
 
-•	moves.c / moves.h : Gestion des mouvements disponibles pour chaque phase.
+•	moves.c / moves.h : Gestion des mouvements possibles de MARC.
 
-•	stack.c / stack.h : Structure pour gérer les séquences de mouvements.
+•	queue.c / queue.h : Gestion des files pour explorer les voisins.
 
-•	queue.c / queue.h : File pour la gestion des voisins dans les calculs de coûts.
+•	stack.c / stack.h : Gestion des piles pour stocker les mouvements.
 
-•	Fichiers .map : Cartes d’exemple (par exemple, example1.map, training.map).
+•	test.c / test.h : Tests pour vérifier le fonctionnement des différentes fonctionnalités.
 
+•	Fichiers .map :
 
-#####Instructions d’installation
+•	example1.map : Carte normale.
+
+•	other.map : Carte complexe pour des tests avancés.
+
+##nstructions d’installation
 
 1.Compilation
 
 Utilisez la commande suivante pour compiler le projet avec GCC :
 
-gcc -o rover_run main.c tree.c loc.c map.c moves.c stack.c queue.c
+gcc -o rover_run main.c map.c loc.c tree.c moves.c queue.c stack.c test.c -I.
 
 2.Exécution
 
-Une fois le programme compilé, exécutez-le avec :
+Exécutez le programme avec :
 
 ./rover_run
 
-3.Utilisation
+3.Instructions d’utilisation
 
-	•	Placez les fichiers .map dans le répertoire attendu (par défaut, /mnt/data/maps ou dans le chemin défini dans le code).
-	•	Utilisez les fichiers de carte fournis (example1.map, training.map) ou créez vos propres cartes pour tester.
+	1.	Sélection de la carte :
+	•	Lorsque vous exécutez le programme, vous devez d’abord choisir entre example1.map et other.map.
+	•	Assurez-vous que les fichiers .map sont placés dans le dossier ../maps/.
+	2.	Menu principal :
+	•	Vous pouvez choisir entre plusieurs options :
+	•	Conduire MARC à la base.
+	•	Tester les fonctionnalités liées aux cartes.
+	•	Tester la localisation et les mouvements.
+	3.	Déplacements de MARC :
+	•	Saisissez la position de départ (x, y) et l’orientation (NORTH, EAST, SOUTH, WEST).
 
-Exemple de sortie
+4.Exemple de sortie
 
-Voici un exemple de sortie obtenu après exécution avec une carte 7 x 6 :
+Voici un exemple de sortie avec example1.map :
 
+=== MENU ===
+1. Driving Marc to the base
+2. Testing of map functions (map)
+3. Testing of localisation functions (loc)
+4. Testing of movements functions (moves)
+0. Quit
+   Your choice : 1
+
+[INFO] Driving Marc to the base...
+Enter the starting position x y : 4 4
+Enter the starting orientation (0=NORTH, 1=EAST, 2=SOUTH, 3=WEST) : 2
 Map created with dimensions 7 x 6
 3 2 2 1 4 3
 2 1 0 1 3 3
-1 1 1 3 1 1
 ...
 
-Temps écoulé récurssivité: 0.000145 secondes
-Temps écoulé coûts minimal: 0.000015 secondes
-Minimum cost leaf: 2
-START -> T right -> F 10m -> T right -> F 20m
-Temps écoulé récurssivité: 0.001220 secondes
-Temps écoulé coûts minimal: 0.000136 secondes
-Minimum cost leaf: 0
-START -> F 10m -> T right -> F 10m -> F 10m -> B 10m
-Number of phases: 2
-Temps nécessaire pour conduire le robot à la base: 0.002141 secondes
+Time needed to drive Marc to the base : 0.002141 secondes
 
-######Tests effectués
+##Tests effectués
 
-	•	Cartes utilisées : example1.map et training.map.
-	•	Fonctionnalités vérifiées :
-	•	Chargement de la carte.
-	•	Construction et exploration de l’arbre.
-	•	Choix des séquences optimales.
-	•	Prise en compte des types de terrains.
-	•	Limites testées :
-	•	Sortie de la carte.
-	•	Gestion des crevasses.
+	1.	Fonctionnalités testées :
+	•	Chargement et affichage des cartes.
+	•	Mise à jour de la localisation après un mouvement.
+	•	Simulation complète du déplacement vers la base.
+	2.	Cartes utilisées :
+	•	example1.map : Carte normale.
+	•	other.map : Carte complexe avec des terrains combinés.
 
-######Limitations connues
+##Limitations connues
 
-	•	L’algorithme peut nécessiter des ajustements pour gérer des cartes très grandes ou des terrains complexes.
-	•	Les tests peuvent être étendus pour vérifier des scénarios extrêmes.
+	•	L’algorithme peut nécessiter des ajustements pour des cartes très grandes ou très complexes.
+	•	La gestion des terrains spéciaux comme les crevasses est partiellement implémentée.
 
-Contributeurs
+##Contributeurs
 
-	•	Groupe PJT-B 2 - Rover Run
+	•	Kouadio Bli Jean Eudes
+	•	Ismaël Sangaré
+	•	Boudnoma Bienvenu Juvénis Fortune KABORE
+    	(Groupe PJT-B 2 - Rover Run)
 
