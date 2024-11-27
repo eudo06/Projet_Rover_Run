@@ -5,8 +5,6 @@
 #ifndef PROJET_ROVER_RUN_TEST_H
 #define PROJET_ROVER_RUN_TEST_H
 
-#include "loc.h"
-#include "moves.h"
 
 
 void test_loc_functions();

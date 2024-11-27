@@ -12,10 +12,10 @@ void test_all_functions();
 int main() {
 
 
-    test_all_functions();
-    /*test_map_functions();
+    //test_all_functions();
+    test_map_functions();
     test_loc_functions();
-    test_moves_functions(); */
+    test_moves_functions();
     return 0;
 }
 

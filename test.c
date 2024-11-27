@@ -115,16 +115,6 @@ void test_translate() {
     printf("\n");
 }
 
-// Function to test getMoveAsString function
-void test_getMoveAsString() {
-    printf("Testing getMoveAsString function:\n");
-
-    for (int i = T_LEFT; i <= B_10; i++) {
-        printf("Move %d as string: %s\n", i, getMoveAsString((t_move)i));
-    }
-
-    printf("\n");
-}
 
 // Function to test move function
 void test_move() {
@@ -176,7 +166,7 @@ void test_getRandomMoves() {
 void test_moves_functions() {
     test_rotate();
     test_translate();
-    test_getMoveAsString();
+
     test_move();
     test_updateLocalisation();
     test_getRandomMoves();
