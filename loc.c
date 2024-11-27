@@ -4,6 +4,8 @@
 
 #include "loc.h"
 
+#include <stdio.h>
+
 t_localisation loc_init(int x, int y, t_orientation ori)
 {   // if (isValidLocalisation(t_position loc, int x_max, int y_max) ){}
     t_localisation loc;
@@ -50,7 +52,5 @@ t_position DOWN(t_position pos)
     new_pos.y = pos.y + 1;
     return new_pos;
 }
-
-
 
 

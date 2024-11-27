@@ -54,4 +54,30 @@ t_localisation move(t_localisation, t_move);
 void updateLocalisation(t_localisation *, t_move);
 
 t_move *getRandomMoves(int N);
-#endif //UNTITLED1_MOVES_H
+/**
+ * @brief function to translate the robot according to a move and its actual position
+ * @param loc : the actual localisation of the robot
+ * @param move : the move to do
+ * @return the new localisation of the robot
+ */
+t_localisation translate(t_localisation, t_move);
+/**
+ * @brief function to rotate the robot according to a move and its actual orientation
+ * @param ori : the actual orientation of the robot
+ * @param move : the move to do
+ * @return the new orientation of the robot
+ */
+t_orientation rotate(t_orientation, t_move);
+/**
+ * @brief function to check a valid position for the robot
+ * @param loc : the localisation of the robot
+ * @param x_max : the maximum x position
+ * @param y_max : the maximum y position
+ * @return 1 if the position is valid, 0 otherwise
+ */
+int checkPosition(t_localisation, int, int);
+
+t_localisation loc_init(int, int, t_orientation);
+t_position LEFT(t_position);
+
+#endif

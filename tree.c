@@ -146,7 +146,7 @@ void createTreeRecursivity(p_node parent, t_map map, int k) {
 void findMinCostLeafInNode(p_node node, p_node *leaf) {
     if (node == NULL)
         return;
-    if ((node->nbSons == 0 || node->nbSons == 4 ) && node->cost < 10000) {  // Consider defining 10000 as a constant
+    if ((node->nbSons == 0 || node->nbSons == 4 ) && node->soil_type < CREVASSE) {
         if (*leaf == NULL || node->cost < (*leaf)->cost) {
             *leaf = node;
         }
@@ -358,7 +358,7 @@ int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     long microseconds = end.tv_usec - start.tv_usec;
     double elapsed = seconds + microseconds * 1e-6;
 
-    printf("\nTemps écoulé récurssivité: %.6f secondes\n", elapsed);
+    printf("\nTime spent to create the tree : %.6f secondes\n", elapsed);
 
     //printTree(tree, 0);
 
@@ -372,7 +372,7 @@ int lauchPhase(t_map map, t_localisation *start_loc, t_stack_node *s) {
     seconds = end1.tv_sec - start1.tv_sec;
     microseconds = end1.tv_usec - start1.tv_usec;
      elapsed = seconds + microseconds * 1e-6;
-    printf("\nTemps écoulé coûts minimal: %.6f secondes\n", elapsed);
+    printf("\nTime spent to find the minimum cost leaf : %.6f secondes\n", elapsed);
 
 
     if(minLeaf != NULL) {

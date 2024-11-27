@@ -9,9 +9,9 @@
 #include "moves.h"
 
 
-void test_localisation();
-void test_move();
-void test_getRandomMoves();
+void test_loc_functions();
+void test_moves_functions();
+void test_map_functions();
 
 #endif //PROJET_ROVER_RUN_TEST_H
 

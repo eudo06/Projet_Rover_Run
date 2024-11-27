@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "moves.h"
 
-
+#include "map.h"
 
 
 /* prototypes of local functions */
@@ -197,3 +197,5 @@ t_move *getRandomMoves(int N) {
     }
     return moves;
 }
+
+

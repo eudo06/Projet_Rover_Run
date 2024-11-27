@@ -1,25 +1,21 @@
 #include <stdio.h>
 #include "map.h"
 #include "loc.h"
-
+#include "test.h"
 #include "tree.h"
 #include <sys/time.h>
 
 
 
 void test_all_functions();
-void testEnSpeed(t_map map);
 
 int main() {
 
 
     test_all_functions();
-
-
-  /*  test_move();
-    test_localisation();
-    test_getRandomMoves();
-*/
+    /*test_map_functions();
+    test_loc_functions();
+    test_moves_functions(); */
     return 0;
 }
 
@@ -34,7 +30,7 @@ void test_all_functions() {
     // If either _WIN32 or _WIN64 is defined, it means we are on a Windows platform.
     // On Windows, file paths use backslashes (\), hence we use the appropriate file path for Windows.
 #if defined(_WIN32) || defined(_WIN64)
-    map = createMapFromFile("..\\maps\\example1.map");
+    map = createMapFromFile("..\\maps\\other.map");
 #else
     map = createMapFromFile("../maps/example1.map");
 #endif
@@ -57,31 +53,26 @@ void test_all_functions() {
         }
         printf("\n");
     }
-    //displayMap(map);
+    displayMap(map);
 
 
-   testEnSpeed(map);
-
-
-}
-
-
-void testEnSpeed(t_map map){
-
-    t_localisation start_loc = {{2 ,4},SOUTH };
+    t_localisation start_loc = {{4 ,4},SOUTH };
     t_stack_node s = createStackNode(100);
     struct timeval start, end;
 
-    // Temps de début
+    //Start time
     gettimeofday(&start, NULL);
     drivingToBase(map, &start_loc, &s);
-    // Temps de fin
-    gettimeofday(&end, NULL);
 
-    // Calculer le temps écoulé
+    gettimeofday(&end, NULL);
+    // end time
+
+    // time elapsed
     long seconds = end.tv_sec - start.tv_sec;
     long microseconds = end.tv_usec - start.tv_usec;
     double elapsed = seconds + microseconds * 1e-6;
 
-    printf("Temps nécessaire pour conduire le robot à la base: %.6f secondes\n", elapsed);
+    printf(" Time needed to drive Marc to the base : %.6f secondes\n", elapsed);
+
+
 }

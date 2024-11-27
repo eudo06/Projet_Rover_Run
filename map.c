@@ -247,10 +247,7 @@ t_map createMapFromFile(char *filename)
     return map;
 }
 
-t_map createTrainingMap()
-{
-    return createMapFromFile("..\\maps\\training.map");
-}
+
 
 void displayMap(t_map map)
 {
@@ -301,3 +298,4 @@ void displayMap(t_map map)
     }
     return;
 }
+
