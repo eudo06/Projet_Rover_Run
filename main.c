@@ -5,58 +5,18 @@
 #include "tree.h"
 #include <sys/time.h>
 
-// Prototypes des fonctions
-void test_all_functions();
-void test_map_functions();
-void test_loc_functions();
-void test_moves_functions();
+void menu();
+void driving_function_test();
+
 
 int main() {
-    int choice;
 
-    do {
-        // Affichage du menu
-        printf("\n=== MENU PRINCIPAL ===\n");
-        printf("1. Tester toutes les fonctionnalités\n");
-        printf("2. Tester les fonctionnalités de la carte (map)\n");
-        printf("3. Tester les fonctionnalités de localisation (loc)\n");
-        printf("4. Tester les fonctionnalités des mouvements (moves)\n");
-        printf("0. Quitter\n");
-        printf("Votre choix : ");
-        scanf("%d", &choice);
-
-        // Gestion des choix
-        switch (choice) {
-            case 1:
-                printf("\n[INFO] Test de toutes les fonctionnalités...\n");
-                test_all_functions();
-                break;
-            case 2:
-                printf("\n[INFO] Test des fonctionnalités de la carte...\n");
-                test_map_functions();
-                break;
-            case 3:
-                printf("\n[INFO] Test des fonctionnalités de localisation...\n");
-                test_loc_functions();
-                break;
-            case 4:
-                printf("\n[INFO] Test des fonctionnalités des mouvements...\n");
-                test_moves_functions();
-                break;
-            case 0:
-                printf("\n[INFO] Fin du programme.\n");
-                break;
-            default:
-                printf("\n[ERREUR] Choix invalide. Veuillez réessayer.\n");
-                break;
-        }
-    } while (choice != 0);
-
+    menu();
     return 0;
 }
 
-// Fonction de test pour vérifier toutes les fonctionnalités
-void test_all_functions() {
+
+void driving_function_test(t_localisation start_loc) {
     t_map map;
 
     // Vérification de la plateforme pour les chemins de fichiers
@@ -82,21 +42,70 @@ void test_all_functions() {
     }
     displayMap(map);
 
-    t_localisation start_loc = {{4, 4}, SOUTH};
     t_stack_node s = createStackNode(100);
     struct timeval start, end;
 
-    // Début du chronométrage
+    // start
     gettimeofday(&start, NULL);
     drivingToBase(map, &start_loc, &s);
 
-    // Fin du chronométrage
+   //end
     gettimeofday(&end, NULL);
 
-    // Calcul du temps écoulé
+    //elapsed
     long seconds = end.tv_sec - start.tv_sec;
     long microseconds = end.tv_usec - start.tv_usec;
     double elapsed = seconds + microseconds * 1e-6;
 
-    printf("Temps nécessaire pour conduire Marc à la base : %.6f secondes\n", elapsed);
+    printf("Time needed to drive Marc too the base : %.6f secondes\n", elapsed);
+}
+
+void menu() {
+    int choice;
+
+    do {
+
+        printf("\n=== MENU  ===\n");
+        printf("1. Driving Marc to the base\n");
+        printf("2. Testing of map functions  (map)\n");
+        printf("3. Testing of localisation functions (loc)\n");
+        printf("4. Testing of movements functions (moves)\n");
+        printf("0. Quit\n");
+        printf("Your choice : ");
+        scanf("%d", &choice);
+
+
+        switch (choice) {
+            case 1:
+                printf("\n[INFO] Driving Marc to the base...\n");
+                printf("Enter the starting position (x,y) : ");
+                int x, y;
+                scanf("%d %d", &x, &y);
+                printf("Enter the starting orientation (NORTH, EAST, SOUTH, WEST) :");
+                t_orientation ori;
+                scanf("%s", &ori);
+                t_localisation start_loc = {x, y, ori};
+                driving_function_test(start_loc);
+            break;
+            case 2:
+                printf("\n[INFO] Testing of map functions  (map)...\n");
+            test_map_functions();
+            break;
+            case 3:
+                printf("\n[INFO] Testing of localisation functions (loc)...\n");
+            test_loc_functions();
+            break;
+            case 4:
+                printf("\n[INFO] Testing of movements functions (moves)...\n");
+            test_moves_functions();
+            break;
+            case 0:
+                printf("\n[INFO] End of program.\n");
+            break;
+            default:
+                printf("\n[ERROR] Invalid choice. Try again.\n");
+            break;
+        }
+    } while (choice != 0);
+
 }

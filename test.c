@@ -11,7 +11,7 @@
 
 
 
-// Test : Vérification de la sortie de la carte
+
 void testOutOfBounds() {
     printf("=== Test : Vérification de la sortie de la carte ===\n");
 
@@ -195,7 +195,6 @@ void test_getRandomMoves() {
 void test_moves_functions() {
     test_rotate();
     test_translate();
-
     test_move();
     test_updateLocalisation();
     test_getRandomMoves();
